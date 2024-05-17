@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-
+from rest_framework import status
+from rest_framework.decorators import api_view
+@api_view(['GET'])
 def coord_tester(request):
     if request.method == 'GET':
         # GET 요청에서 lat와 lng 값을 가져옵니다.
@@ -22,3 +24,4 @@ def coord_tester(request):
     else:
         # GET 요청이 아닌 경우에는 오류 응답을 반환합니다.
         return JsonResponse({'error': 'Only GET method is allowed.'}, status=405)
+
