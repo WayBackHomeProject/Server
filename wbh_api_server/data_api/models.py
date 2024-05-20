@@ -62,3 +62,15 @@ class PoliceStation(models.Model):
         return f"이름 : {self.department} {self.type}, 소재지: {self.address} ({self.latitude}, {self.longitude})"
     
 
+
+class AlarmBell(models.Model):
+    '''
+    TYPE LO	LA	
+    '''
+    type = models.CharField(max_length=100)  # TYPE [비상벨]
+    latitude = models.FloatField()  # 위도
+    longitude = models.FloatField()  # 경도
+
+    def __str__(self):
+        return f"타입 : {self.type}, 위치 :({self.latitude}, {self.longitude})"
+    

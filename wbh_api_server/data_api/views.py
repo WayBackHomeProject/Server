@@ -77,7 +77,7 @@ def cctv_coordinates_in_radius(request):
 @api_view(['GET'])
 def conveniencestore_coordinates_in_radius(request):
     """
-    현재 좌표(lat, lng)을 기반으로 반경 5km 내의 cctv 좌표를 
+    현재 좌표(lat, lng)을 기반으로 반경 5km 내의 편의점 좌표를 
     ConvenienceStore모델(data_api_convenience_store 테이블)에서 찾아서 조건에 일치하는 레이블들을
     json 형식으로 반환하는 함수
     """
@@ -118,8 +118,8 @@ def conveniencestore_coordinates_in_radius(request):
 @api_view(['GET'])
 def policestation_coordinates_in_radius(request):
     """
-    현재 좌표(lat, lng)을 기반으로 반경 5km 내의 cctv 좌표를 
-    ConvenienceStore모델(data_api_convenience_store 테이블)에서 찾아서 조건에 일치하는 레이블들을
+    현재 좌표(lat, lng)을 기반으로 반경 5km 내의 경찰서 좌표를 
+    PoliceStation모델(data_api_policestation 테이블)에서 찾아서 조건에 일치하는 레이블들을
     json 형식으로 반환하는 함수
     """
     try:
