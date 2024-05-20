@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import CCTV, ConvenienceStore, PoliceStation
+from .models import CCTV, ConvenienceStore, PoliceStation, AlarmBell
 import math
 
 @api_view(['GET'])
@@ -91,11 +91,11 @@ def conveniencestore_coordinates_in_radius(request):
     
     
 
-    # Retrieve all CCTV records
+    # Retrieve all convenience_stores records
     convenience_stores = ConvenienceStore.objects.all()
     results = []
 
-    # Filter CCTV coordinates within the radius
+    # Filter convenience_stores coordinates within the radius
     for store in convenience_stores:
         distance = haversine(lat, lng, store.latitude, store.longitude)
         if distance <= radius_km:
@@ -132,11 +132,11 @@ def policestation_coordinates_in_radius(request):
     
     
 
-    # Retrieve all CCTV records
+    # Retrieve all PoliceStation records
     police_stations = PoliceStation.objects.all()
     results = []
 
-    # Filter CCTV coordinates within the radius
+    # Filter PoliceStation coordinates within the radius
     for station in police_stations:
         distance = haversine(lat, lng, station.latitude, station.longitude)
         if distance <= radius_km:
@@ -154,6 +154,38 @@ def policestation_coordinates_in_radius(request):
 
     return Response(results)
 
+@api_view(['GET'])
+def alarmbell_coordinates_in_radius(request):
+    """
+    현재 좌표(lat, lng)을 기반으로 반경 5km 내의 비상벨 좌표를 
+    AlarmBell모델(data_api_alarmbell 테이블)에서 찾아서 조건에 일치하는 레이블들을
+    json 형식으로 반환하는 함수
+    """
+    try:
+        # Get latitude and longitude from request parameters
+        lat = float(request.GET.get('lat'))
+        lng = float(request.GET.get('lng'))
+        radius_km = float(request.GET.get('radius_km'))
+    except (TypeError, ValueError):
+        return Response({'error': 'Invalid or missing lat/lng parameters'}, status=400)
+    
+    
+
+    # Retrieve all AlarmBell records
+    alarmbells = AlarmBell.objects.all()
+    results = []
+
+    # Filter AlarmBell coordinates within the radius
+    for alarm in alarmbells:
+        distance = haversine(lat, lng, alarm.latitude, alarm.longitude)
+        if distance <= radius_km:
+            results.append({
+                'type' : alarm.type,
+                'latitude': alarm.latitude,
+                'longitude': alarm.longitude,
+            })
+
+    return Response(results)
 
 
 

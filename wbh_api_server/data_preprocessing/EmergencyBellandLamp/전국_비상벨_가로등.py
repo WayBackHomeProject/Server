@@ -23,6 +23,7 @@ cursor.execute(drop_table_query)
 # 새로운 테이블을 생성합니다.
 create_table_query = """
 CREATE TABLE data_api_alarmbell (
+    id SERIAL PRIMARY KEY,
     type VARCHAR(100) NOT NULL,
     latitude DOUBLE PRECISION NOT NULL,
     longitude DOUBLE PRECISION NOT NULL
@@ -33,16 +34,18 @@ cursor.execute(create_table_query)
 # 데이터 삽입 쿼리
 insert_query = """
 INSERT INTO data_api_alarmbell (
+    id,
     type,
     latitude,
     longitude
-) VALUES (?, ?, ?)
+) VALUES (?, ?, ?, ?)
 """
 
 # 데이터를 순회하면서 데이터베이스에 삽입합니다.
 for index, row in data.iterrows():
     print(f"{index}행 삽입")
     cursor.execute(insert_query, (
+        index+1,
         row['TYPE'],
         row['LA'],
         row['LO']
