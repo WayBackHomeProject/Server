@@ -27,9 +27,9 @@ class CCTV(models.Model):
     
 class ConvenienceStore(models.Model):
     '''
-    TYPE	SR_NM	ADRES	TEL_NO	LA	LO	DETAIL_ADR	SIGUNGU	SIDO	UMD	LEGALDONG_	LEGALDON_1
+    TYPE	SR_NM	ADRES	TEL_NO	LA	LO	DETAIL_ADR	SIGUNGU	SIDO	UMD	LEGALDONG_	LEGALDON_1    
     '''
-    type = models.CharField(max_length=100)  # [여성안전지킴이집, 아동안전지킴이집, 편의점]
+    num = models.CharField(max_length=100)  # [여성안전지킴이집, 아동안전지킴이집, 편의점]
     sr_nm = models.CharField(max_length=100)  # [씨유 동인천역 점, 부평 경찰서]
     adres = models.CharField(max_length=100)  # [인천광역시 중구 참외전로 117-9,..]
     tel_no = models.CharField(max_length=50, null=True, blank=True)   # [전화번호]
@@ -44,3 +44,21 @@ class ConvenienceStore(models.Model):
         return f"TYPE : {self.type} 이름 : {self.sr_nm}, 소재지: {self.adres} ({self.latitude}, {self.longitude})"
     
     
+class PoliceStation(models.Model):
+    '''
+    연번	시도청	경찰서	관서명	구분	전화번호	주소	Lat	Lng
+    '''
+    number = models.IntegerField()  # 번호
+    sido = models.CharField(max_length=100)  # 시도청 [서울청, ]
+    policestation = models.CharField(max_length=100)  # 경찰서 [서울마포]
+    department = models.CharField(max_length=100)  # 관서명 [종로2가]
+    type = models.CharField(max_length=100)  # 구분 [지구대]
+    tel_no = models.CharField(max_length=50, null=True, blank=True)   # 전화번호 [02-...]
+    address = models.CharField(max_length=100)  # 주소 [서울특별시 중구  을지로 234..]
+    latitude = models.FloatField()  # 위도
+    longitude = models.FloatField()  # 경도
+
+    def __str__(self):
+        return f"이름 : {self.department} {self.type}, 소재지: {self.address} ({self.latitude}, {self.longitude})"
+    
+
