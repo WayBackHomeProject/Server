@@ -15,12 +15,12 @@ conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
 # 기존 테이블이 존재하면 삭제합니다.
-drop_table_query = "DROP TABLE IF EXISTS data_api_convenience_store"
+drop_table_query = "DROP TABLE IF EXISTS data_api_conveniencestore"
 cursor.execute(drop_table_query)
 
 # 새로운 테이블을 생성합니다.
 create_table_query = """
-CREATE TABLE data_api_convenience_store (
+CREATE TABLE data_api_conveniencestore (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     type TEXT,
     sr_nm TEXT,
@@ -38,7 +38,7 @@ cursor.execute(create_table_query)
 
 # 데이터 삽입 쿼리
 insert_query = """
-INSERT INTO data_api_convenience_store (
+INSERT INTO data_api_conveniencestore (
     type,
     sr_nm,
     adres,
@@ -60,8 +60,8 @@ for index, row in data.iterrows():
         row['SR_NM'],
         row['ADRES'],
         row['TEL_NO'],
-        row['LA'],
         row['LO'],
+        row['LA'],
         row['DETAIL_ADR'],
         row['SIGUNGU'],
         row['SIDO'],

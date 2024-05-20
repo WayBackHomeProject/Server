@@ -2,3 +2,5 @@
 /wbh_api_server/bin
 /wbh_api_server/lib
 /wbh_api_server/include
+/wbh_api_server/data_api/__pycache__
+/wbh_api_server/data_api/migrations

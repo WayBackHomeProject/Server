@@ -93,6 +93,7 @@ def conveniencestore_coordinates_in_radius(request):
 
     # Retrieve all CCTV records
     convenience_stores = ConvenienceStore.objects.all()
+    print(convenience_stores[0])
     results = []
 
     # Filter CCTV coordinates within the radius
