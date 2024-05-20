@@ -4,3 +4,5 @@
 /wbh_api_server/include
 /wbh_api_server/data_api/__pycache__
 /wbh_api_server/data_api/migrations
+
+wbh_api_server/.env

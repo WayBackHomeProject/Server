@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# settings.py
+OPENAI_API_KEY = 'your-api-key'
+
 
 # Application definition
 

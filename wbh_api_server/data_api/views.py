@@ -3,32 +3,40 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import CCTV, ConvenienceStore, PoliceStation, AlarmBell
-import math
+from dotenv import load_dotenv
+import math, os, requests
 
 @api_view(['GET'])
-def coord_tester(request):
+def safe_tip(request):
     if request.method == 'GET':
-        # GET 요청에서 lat와 lng 값을 가져옵니다.
-        lat = request.GET.get('lat')
-        lng = request.GET.get('lng')
-
-        # lat와 lng 값이 제대로 전달되었는지 확인합니다.
-        if lat is None or lng is None:
-            # lat 또는 lng 값이 누락된 경우에는 오류 응답을 반환합니다.
-            return JsonResponse({'error': 'Latitude and longitude parameters are required.'}, status=400)
-
-        # 여기서는 간단히 예시로 받은 좌표 값을 그대로 반환합니다.
-        response_data = {
-            'latitude': lat,
-            'longitude': lng,
-            'message': 'Received latitude and longitude values successfully.'
+        question = request.GET.get('question', '안전하기 귀가하기 위한 팁 또는 정보를 300자 이내로 출력해줘. 그리고 각종 신고 번호를 알려줘')
+        load_dotenv()
+        # OpenAI API에 요청을 보낼 payload 구성
+        api_url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}",
+            "Content-Type": "application/json"
         }
-        return JsonResponse(response_data)
-    else:
-        # GET 요청이 아닌 경우에는 오류 응답을 반환합니다.
-        return JsonResponse({'error': 'Only GET method is allowed.'}, status=405)
+        data = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": question}
+            ]
+        }
+        
+        try:
+            response = requests.post(api_url, headers=headers, json=data)
+            response.raise_for_status()
+            result = response.json()
 
-
+            answer = result['choices'][0]['message']['content'].strip()
+            return JsonResponse({"answer": answer})
+        except requests.exceptions.RequestException as e:
+            # 에러 핸들링
+            return JsonResponse({"error": str(e)}, status=500)
+        
+        
 @api_view(['GET'])
 def cctv_coordinates_in_radius(request):
     """
