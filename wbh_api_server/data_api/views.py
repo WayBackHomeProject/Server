@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import CCTV
+from .models import CCTV, ConvenienceStore
 import math
 
 @api_view(['GET'])
@@ -73,6 +73,47 @@ def cctv_coordinates_in_radius(request):
             })
 
     return Response(results)
+
+@api_view(['GET'])
+def conveniencestore_coordinates_in_radius(request):
+    """
+    현재 좌표(lat, lng)을 기반으로 반경 5km 내의 cctv 좌표를 
+    ConvenienceStore모델(data_api_convenience_store 테이블)에서 찾아서 조건에 일치하는 레이블들을
+    json 형식으로 반환하는 함수
+    """
+    try:
+        # Get latitude and longitude from request parameters
+        lat = float(request.GET.get('lat'))
+        lng = float(request.GET.get('lng'))
+        radius_km = float(request.GET.get('radius_km'))
+    except (TypeError, ValueError):
+        return Response({'error': 'Invalid or missing lat/lng parameters'}, status=400)
+    
+    
+
+    # Retrieve all CCTV records
+    convenience_stores = ConvenienceStore.objects.all()
+    results = []
+
+    # Filter CCTV coordinates within the radius
+    for store in convenience_stores:
+        distance = haversine(lat, lng, store.latitude, store.longitude)
+        if distance <= radius_km:
+            results.append({
+                'type': store.type,
+                'sr_nm' : store.sr_nm,
+                'adres': store.adres,
+                'tel_no': store.tel_no,
+                'latitude': store.latitude,
+                'longitude': store.longitude,
+                'detail_adr': store.detail_adr,
+                'sigungu' : store.sigungu,
+                'sido' : store.sido,
+                'umd' : store.umd
+            })
+
+    return Response(results)
+
 
 
 def haversine(lat1, lon1, lat2, lon2):

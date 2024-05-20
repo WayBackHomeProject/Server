@@ -25,3 +25,22 @@ class CCTV(models.Model):
         return f"행정지역 : {self.area_code} CCTV 번호: {self.number}, 소재지: {self.address_road} ({self.latitude}, {self.longitude})"
     
     
+class ConvenienceStore(models.Model):
+    '''
+    TYPE	SR_NM	ADRES	TEL_NO	LA	LO	DETAIL_ADR	SIGUNGU	SIDO	UMD	LEGALDONG_	LEGALDON_1
+    '''
+    type = models.CharField(max_length=100)  # [여성안전지킴이집, 아동안전지킴이집, 편의점]
+    sr_nm = models.CharField(max_length=100)  # [씨유 동인천역 점, 부평 경찰서]
+    adres = models.CharField(max_length=100)  # [인천광역시 중구 참외전로 117-9,..]
+    tel_no = models.CharField(max_length=50, null=True, blank=True)   # [전화번호]
+    latitude = models.FloatField()  # WGS84위도
+    longitude = models.FloatField()  # WGS84경도  
+    detail_adr = models.CharField(max_length=100)  # [인천광역시 중구 참외전로 117-9,..]
+    sigungu = models.CharField(max_length=100) # 시군구[인천, 대전, 충남, ..]
+    sido = models.CharField(max_length=100)  # [중구, 부평구, ]
+    umd = models.CharField(max_length=100)  # [인현동]
+
+    def __str__(self):
+        return f"TYPE : {self.type} 이름 : {self.sr_nm}, 소재지: {self.adres} ({self.latitude}, {self.longitude})"
+    
+    
