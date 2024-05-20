@@ -141,7 +141,7 @@ def policestation_coordinates_in_radius(request):
         distance = haversine(lat, lng, station.latitude, station.longitude)
         if distance <= radius_km:
             results.append({
-                'number': station.type,
+                'number': station.number,
                 'sido' : station.sido,
                 'policestation': station.policestation,
                 'department': station.department,

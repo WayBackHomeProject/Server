@@ -29,7 +29,7 @@ class ConvenienceStore(models.Model):
     '''
     TYPE	SR_NM	ADRES	TEL_NO	LA	LO	DETAIL_ADR	SIGUNGU	SIDO	UMD	LEGALDONG_	LEGALDON_1    
     '''
-    num = models.CharField(max_length=100)  # [여성안전지킴이집, 아동안전지킴이집, 편의점]
+    type = models.CharField(max_length=100)  # [여성안전지킴이집, 아동안전지킴이집, 편의점]
     sr_nm = models.CharField(max_length=100)  # [씨유 동인천역 점, 부평 경찰서]
     adres = models.CharField(max_length=100)  # [인천광역시 중구 참외전로 117-9,..]
     tel_no = models.CharField(max_length=50, null=True, blank=True)   # [전화번호]
